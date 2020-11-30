@@ -1,0 +1,46 @@
+<div class="sp-loader" ng-if="$parent.view_loader"></div>
+<div id="wordCloud" style="width:50px;height:25px;border: 1px solid red"></div>
+
+<table cellpadding="1" cellspacing="1" bgcolor="#AAAAAA" class="uk-margin-top" width="100%">
+
+	<tr bgcolor="#DDDDFF">
+		<td width="5%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+		<td>Имя</td>
+		<td>Кем создано</td>
+		<td>Создан</td>
+		<td>кем изменено</td>
+		<td>Изменен</td>
+		<td>Тег</td>
+	</tr>
+
+		<tr bgcolor="FFFFFF" class="accordion" ng-repeat="item in $parent.items">
+					<td title="ID:{{item.id}}" align="center">
+						<a href="#" style="cursor:pointer" uk-icon="file-edit" class="uk-icon-link uk-margin-small-right"
+							ng-click="editItem(item.id,$index)">
+					</td>
+					<td width="300">{{item.name}}</td>
+		            <td >{{item.author.split('#')[1]}}</td>
+		            <td >{{item.created}}</td>
+		            <td >{{item.editor.split('#')[1]}}</td>
+		            <td class="uk-text-truncate">{{item.modified}}</td>
+		            <td>
+						<span ng-repeat="itemm in item.tag">
+							<span>{{itemm.value}}</span>
+							<span ng-if="!$last">,</span>
+					</td>
+        </tr>
+
+</table>
+
+<center ng-if="$parent.items.length > 0">Показано {{$parent.items.length}}.</center>
+<center style="cursor:pointer" ng-if="$parent.last_packeg_length >= $parent.page_size" ng-click="getItems()">
+	 Показать еще 50.
+	<span  class="uk-align-center" uk-icon="icon: more"></span>
+</center>
+
+<center style="cursor:pointer" ng-if="!$parent.view_loader && $parent.items.length == 0">
+	<br>
+	Записей не найдено.....
+</center>
+<br><br><br><br><br>
+

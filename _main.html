@@ -1,0 +1,656 @@
+﻿
+
+<div class="sp-container">
+
+	<div class="uk-margin sp-container-left">
+
+		<div>
+			<label class="uk-form-label" for="form-stacked-text">
+				Название <span ng-if="$parent.edit_item.type=='Тендер'">или предмет торга</span> <font color="red">*</font>
+			</label>
+
+			<span class="uk-form-controls">
+				<textarea class="uk-textarea uk-form-width-large uk-form-small" rows="2" maxlength="250" ng-change="setChange()" ng-model="$parent.edit_item.name"></textarea>
+				<span class="vers_ico">
+					<span style="cursor:pointer" class="uk-icon-button" uk-icon="icon:info" onclick="showVersion('Реестр Запросов','Title',this)" item_id="{{$parent.edit_item.id}}"></span>
+				</span>
+			</span>
+		</div>
+
+		<div class="sp-h-padding"></div>
+
+		<div ng-if="$parent.edit_item.type=='Услуга'">
+			<label class="uk-form-label" for="form-stacked-text">
+				Суть работы и краткое наименование зап частей
+			</label>
+			<span class="uk-form-controls">
+				<textarea class="uk-textarea uk-form-width-large uk-form-small" rows="4" ng-change="setChange()" ng-model="$parent.edit_item.descr"></textarea>
+				<span class="vers_ico">
+					<span style="cursor:pointer" class="uk-icon-button" uk-icon="icon:info" onclick="showVersion('Реестр Запросов','_x0421__x0443__x0442__x044c__x00',this)" item_id="{{$parent.edit_item.id}}"></span>
+				</span>
+			</span>
+		</div>
+
+		<div class="sp-h-padding" ng-if="$parent.edit_item.type=='Услуга'"></div>
+
+		<div ng-if="$parent.edit_item.type=='Тендер'">
+			<label class="uk-form-label" for="form-stacked-text">
+				Номер закупки, лот <font color="red">*</font>
+			</label><br>
+			<span class="uk-form-controls">
+				<input class="uk-input uk-form-width-large uk-form-small sp-styles" ng-change="setChange()" ng-model="$parent.edit_item.lot" />
+				<span class="vers_ico">
+					<span style="cursor:pointer" class="uk-icon-button" uk-icon="icon:info" onclick="showVersion('Реестр Запросов','_x041d__x043e__x043c__x0435__x04',this)" item_id="{{$parent.edit_item.id}}"></span>
+				</span>
+			</span>
+		</div>
+
+		<div class="sp-h-padding" ng-if="$parent.edit_item.type=='Тендер'"></div>
+
+		<div class="sp-flex-container">
+		
+			<div class="sp-flex-left">
+				<label class="uk-form-label" for="form-stacked-text">Продавец <font color="red">*</font></label>
+				<span class="uk-form-controls">
+					<select class="uk-select uk-form-small uk-width-auto" 
+							ng-model="$parent.edit_item.prod" 
+							ng-change="setChange()"
+							ng-disabled="$parent.edit_item.ish != '' && !$parent.current_user.full_access" 
+							style="width:200px">
+						<option></option>
+						<option>АумаПриводСервис</option>
+						<option>Дон-Арсенал</option>
+						<option>ПриводСервис</option>
+						<option>Самсон-Тюмень</option>
+						<option>СТ Автоматизация</option>
+						<option>Стандарм</option>
+					</select>
+					<span class="vers_ico">
+						<span style="cursor:pointer" class="uk-icon-button" uk-icon="icon:info" onclick="showVersion('Реестр Запросов','_x041f__x0440__x043e__x0434__x04',this)" item_id="{{$parent.edit_item.id}}"></span>
+					</span>
+				</span>
+			</div>
+
+			<div class="sp-h-padding"></div>
+
+			<div class="sp-flex-right">
+				<label class="uk-form-label" for="form-stacked-text">Регион <font color="red">*</font></label>
+				<span>
+					<select class="uk-select uk-form-small uk-width-auto" ng-model="$parent.edit_item.region" ng-change="setChange()" ng-disabled="$parent.edit_item.ish != ''">
+						<option></option>
+						<option>Иркутск</option>
+						<option>Москва</option>
+						<option>Новый Уренгой</option>
+						<option>Омск</option>
+						<option>Ростов-на-Дону</option>
+						<option>Тюмень</option>
+						<option>Самара</option>
+						<option>Сургут</option>
+						<option>Уфа</option>
+					</select>
+					<span class="vers_ico">
+						<span style="cursor:pointer" class="uk-icon-button" uk-icon="icon:info" onclick="showVersion('Реестр Запросов','_x0420__x0435__x0433__x0438__x04',this)" item_id="{{$parent.edit_item.id}}"></span>
+					</span>
+				</span>
+			</div>
+			
+		</div>
+
+		<div class="sp-h-padding"></div>
+
+		<div ng-if="$parent.edit_item.type=='Тендер'">
+			<label class="uk-form-label" for="form-stacked-text">Торговая площадка <font color="red">*</font></label><br>
+			<span class="uk-form-controls">
+				<select class="uk-select uk-form-small uk-width-auto sp-styles" ng-model="$parent.edit_item.etp" ng-change="setChange()" ng-disabled="$parent.edit_item.prod == ''" style="width:200px">
+					<option></option>
+					<option ng-repeat="item in $parent.etps" value="{{item.id}};#{{item.name}}" ng-if="item.org == $parent.edit_item.prod">{{item.name}}</option>
+				</select>
+				<span class="vers_ico">
+					<span style="cursor:pointer" class="uk-icon-button" uk-icon="icon:info" onclick="showVersion('Реестр Запросов','_x0422__x043e__x0440__x0433__x04',this)" item_id="{{$parent.edit_item.id}}"></span>
+				</span>
+			</span>
+			<div class="sp-h-padding"></div>
+		</div>
+
+		<div class="sp-flex-container">
+
+			<div class="sp-flex-left">
+
+				<label class="uk-form-label" for="form-stacked-text">Заказчик <font color="red">*</font></label>
+
+				<span class="uk-form-controls" onclick="selectOrg(this)" input_id="org">
+
+
+					<div	class="uk-form-controls sp-styles uk-inline"
+							style="height:30px">
+						<a	class="uk-text-truncate"
+							target="org"
+							href="/crm/org/?id={{($parent.edit_item.org).split(';')[0]}}"
+							ng-if="$parent.edit_item.org != ''">
+							<span style="color:black" class="uk-text-middle uk-text-truncate">
+								{{($parent.edit_item.org).split('#')[1]}}
+							</span>
+						</a>
+							<span style="color:black" class="uk-text-middle" ng-if="$parent.edit_item.org == ''">
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							</span>
+						<span	style = "color:#A8AB9A;cursor:pointer;margin-right:5px;margin-top:3px;"
+								onclick="selectOrg(this)"
+								input_id="org"
+								uk-icon="icon: search"
+						>
+						</span>
+						<input type="text" style="display:none" ng-model="$parent.edit_item.org" id="org" ng-change="setChange()">
+					</div>
+
+				</span>
+				<span class="vers_ico">
+					<span style="cursor:pointer" class="uk-icon-button" uk-icon="icon:info" onclick="showVersion('Реестр Запросов','_x041e__x0440__x0437__x0430__x04',this)" item_id="{{$parent.edit_item.id}}"></span>
+				</span>
+			</div>
+
+			<div class="sp-flex-right" ng-if="$parent.edit_item.type != 'Услуга'">
+
+				<label class="uk-form-label" for="form-stacked-text">
+					Конечный заказчик <font color="red">*</font>
+				</label>
+
+				<span class="uk-form-controls" onclick="selectOrg(this)" input_id="org_kon">
+
+					<div	class="uk-form-controls sp-styles uk-inline"
+							style="height:30px"
+						>
+						<a	class="uk-text-truncate"
+							target="org"
+							href="/crm/org/?id={{($parent.edit_item.org_kon).split(';')[0]}}"
+							ng-if="$parent.edit_item.org != ''">
+							<span style="color:black" class="uk-text-middle uk-text-truncate">
+								{{($parent.edit_item.org_kon).split('#')[1]}}
+							</span>
+						</a>
+							<span style="color:black" class="uk-text-middle" ng-if="$parent.edit_item.org_kon == ''">
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							</span>
+						<span	style = "color:#A8AB9A;cursor:pointer;margin-right:5px;margin-top:3px;"
+								onclick="selectOrg(this)"
+								input_id="org_kon"
+								uk-icon="icon: search"
+						>
+						</span>
+						<input type="text" style="display:none" ng-model="$parent.edit_item.org_kon" id="org_kon" ng-change="setChange()">
+					</div>
+				</span>
+				<span class="vers_ico">
+					<span style="cursor:pointer" class="uk-icon-button" uk-icon="icon:info" onclick="showVersion('Реестр Запросов','_x041e__x0440__x0433__x043f__x04',this)" item_id="{{$parent.edit_item.id}}"></span>
+				</span>
+			</div>
+
+
+			<div class="sp-flex-right" ng-if="$parent.edit_item.type == 'Услуга'">
+				<label class="uk-form-label" for="form-stacked-text">
+					Тип записи <font color="red">*</font>
+				</label><br>
+
+				<span>
+
+					<select class="uk-select uk-form-small uk-width-auto" style="width:100px"
+						ng-model="$parent.edit_item.rtype"
+						ng-change="setChange()">
+						<option></option>
+						<option>SRV</option>
+						<option>QPA</option>
+						<option>прочее</option>
+					</select>
+					<span class="vers_ico">
+						<span style="cursor:pointer" class="uk-icon-button" uk-icon="icon:info" onclick="showVersion('Реестр Запросов','_x0422__x0438__x043f__x0020__x040',this)" item_id="{{$parent.edit_item.id}}"></span>
+					</span>
+				</span>
+			</div>
+
+
+		</div>
+		
+
+		<div class="sp-h-padding"></div>
+
+		<div class="sp-flex-container">
+
+		<div class="sp-flex-left">
+			<label class="uk-form-label" for="form-stacked-text">Ответственный сотрудник <font color="red">*</font>
+				<span class="uk-form-controls">
+					<select class="uk-select uk-form-small uk-width-auto"
+						ng-model="$parent.edit_item.otv"
+						ng-change="checkOtv()">
+						<option value="{{item.id + ';#' + item.name}}" ng-repeat="item in $parent.sotrs">{{item.name}}</option>
+					</select>
+					<span class="vers_ico">
+						<span style="cursor:pointer" class="uk-icon-button" uk-icon="icon:info" onclick="showVersion('Реестр Запросов','_x041e__x0442__x0432__x0435__x04',this)" item_id="{{$parent.edit_item.id}}"></span>
+					</span>
+				</span>
+			</label>
+		</div>
+
+		<div class="sp-flex-right">
+
+			<div ng-if="$parent.edit_item.type != 'Услуга'">
+				<label class="uk-form-label" for="form-stacked-text">Ответственный за проект
+					<span class="uk-form-controls">
+						<select class="uk-select uk-form-small uk-width-auto" ng-model="$parent.edit_item.otv_proj" ng-change="setChange()">
+							<option></option>
+							<option value="{{item.id + ';#' + item.name}}" ng-repeat="item in $parent.sotrs">{{item.name}}</option>
+						</select>
+						<span class="vers_ico">
+							<span style="cursor:pointer" class="uk-icon-button" uk-icon="icon:info" onclick="showVersion('Реестр Запросов','_x041e__x0442__x0432__x0435__x040',this)" item_id="{{$parent.edit_item.id}}"></span>
+						</span>
+					</span>
+				</label>
+			</div>
+
+			<div ng-if="$parent.edit_item.type == 'Услуга'">
+				<label class="uk-form-label" for="form-stacked-text">С зап.частями</label><br>
+				<span class="uk-form-controls">
+					<select class="uk-select uk-form-small uk-width-auto"
+					ng-model="$parent.edit_item.wzap"
+					ng-change="setChange()"
+					style="width:100px"
+					>
+						<option>Да</option>
+						<option>Нет</option>
+					</select>
+					<span class="vers_ico">
+						<span style="cursor:pointer" class="uk-icon-button" uk-icon="icon:info" onclick="showVersion('Реестр Запросов','_x0421__x0020__x0437__x0430__x04',this)" item_id="{{$parent.edit_item.id}}"></span>
+					</span>
+				</span>
+			</div>
+
+		</div>
+
+	</div>
+
+	
+	
+		<div class="sp-h-padding"></div>
+		
+		<div>
+			<label class="uk-form-label" for="form-stacked-text">Комментарий</label><br>
+			<span class="uk-form-controls">
+				<textarea class="uk-textarea uk-form-width-large uk-form-small" rows="4" ng-change="setChange()" ng-model="$parent.edit_item.comment"></textarea>
+				<span class="vers_ico">
+					<span style="cursor:pointer" class="uk-icon-button" uk-icon="icon:info" onclick="showVersion('Реестр Запросов','_x041a__x043e__x043c__x043c__x04',this)" item_id="{{$parent.edit_item.id}}"> </span>
+				</span>
+			</span>
+		</div>
+
+		
+		<div class="sp-h-padding"></div>
+
+		<div>
+			<label class="uk-form-label" for="form-stacked-text">
+				<span ng-if="$parent.edit_item.type != 'Услуга'">
+					Источник <font color="red" ng-if="$parent.edit_item.type == 'Тендер'">*</font>
+				</span>
+				<span ng-if="$parent.edit_item.type == 'Услуга'">
+					Акт
+				</span>
+			</label>
+			<span class="uk-form-controls">
+				<input class="uk-input uk-form-small sp-styles" ng-change="setChange()" ng-model="$parent.edit_item.source" />
+				<span class="vers_ico">
+					<span style="cursor:pointer" class="uk-icon-button" uk-icon="icon:info" onclick="showVersion('Реестр Запросов','_x0418__x0441__x0442__x043e__x04',this)" item_id="{{$parent.edit_item.id}}"></span>
+				</span>
+			</span>
+		</div>
+
+		<div class="sp-h-padding"></div>
+
+		<div ng-if="$parent.edit_item_type != 'Тендер'">
+			<label class="uk-form-label" for="form-stacked-text">
+				<span ng-if="$parent.edit_item.type != 'Услуга'">
+					Код у клиента
+				</span>
+				<span ng-if="$parent.edit_item.type == 'Услуга'">
+					Ком.№
+				</span>
+			</label><br>
+			<span class="uk-form-controls">
+				<input class="uk-input uk-form-small sp-styles" ng-change="setChange()" ng-model="$parent.edit_item.cod" />
+				<span class="vers_ico">
+					<span style="cursor:pointer" class="uk-icon-button" uk-icon="icon:info" onclick="showVersion('Реестр Запросов','_x041a__x043e__x0434__x0020__x04',this)" item_id="{{$parent.edit_item.id}}"></span>
+				</span>
+			</span>
+		</div>
+
+		<div class="sp-h-padding"></div>
+
+		<div class="sp-flex-container">
+
+			<div class="sp-flex-left">
+				<div ng-if="$parent.edit_item.type == 'Тендер'">
+					<label class="uk-form-label" for="form-stacked-text">Начальная макс. цена, р. <!--<font color="red">*</font>--></label>
+					<span class="uk-form-controls">
+						<input type="text" class="uk-input uk-form-width-small uk-form-small"
+							ng-change="setChange()"
+							ng-model="$parent.edit_item.start_cost"
+							onchange="CH(this)"/>
+						<span class="vers_ico">
+							<span style="cursor:pointer" class="uk-icon-button" uk-icon="icon:info" onclick="showVersion('Реестр Запросов','_x041d__x0430__x0447__x0430__x04',this)" item_id="{{$parent.edit_item.id}}"></span>
+						</span>
+					</span>
+				</div>
+			</div>
+
+			<div class="sp-flex-right">
+				<div ng-if="$parent.edit_item.type == 'Тендер'">
+					<label class="uk-form-label" for="form-stacked-text">Предложение, р. <!--<font color="red" ng-if="$parent.edit_item.status == 'ТКП выдано'">*</font>--></label>
+					<span class="uk-form-controls">
+						<input type="text" class="uk-input uk-form-width-small uk-form-small"
+							ng-change="setChange()"
+							ng-model="$parent.edit_item.predl"
+							onchange="CH(this)"/>
+						<span class="vers_ico">
+							<span style="cursor:pointer" class="uk-icon-button" uk-icon="icon:info" onclick="showVersion('Реестр Запросов','_x041f__x0440__x0435__x0434__x04',this)" item_id="{{$parent.edit_item.id}}"></span>
+						</span>
+					</span>
+				</div>
+			</div>
+
+		</div>
+
+		<div class="sp-h-padding"></div>
+
+		<div class="sp-flex-container">
+
+			<div class="sp-flex-left">
+				<div ng-if="$parent.edit_item.type == 'Тендер'">
+					<label class="uk-form-label" for="form-stacked-text">Дата начала торгов <font color="red">*</font></label>
+					<span class="uk-form-controls">
+						<div class="uk-inline">
+							<span class="uk-form-icon uk-form-icon-flip" uk-icon="icon: calendar"></span>
+							<input type="text" placeholder="дд.мм.гггг" class="uk-input uk-form-small" style="width:150px;cursor:pointer" ng-model="$parent.edit_item.trade_start" ng-change="setChange()" onclick="showCalendar(this)" onchange="if(!/^\d\d\.\d\d\.\d\d\d\d$/.test(this.value)){alert('Неверный формат даты');this.value=''}">
+						</div>
+						<span class="vers_ico">
+							<span style="cursor:pointer" class="uk-icon-button" uk-icon="icon:info" onclick="showVersion('Реестр Запросов','_x0414__x0430__x0442__x0430__x001',this)" item_id="{{$parent.edit_item.id}}"></span>
+						</span>
+					</span>
+				</div>
+			</div>
+
+			<div class="sp-flex-right">
+				<div ng-if="$parent.edit_item.type == 'Тендер'">
+					<label class="uk-form-label" for="form-stacked-text">Дата окончания торгов <font color="red">*</font></label><br>
+					<span class="uk-form-controls">
+						<div class="uk-inline">
+							<span class="uk-form-icon uk-form-icon-flip" uk-icon="icon: calendar"></span>
+							<input type="text" placeholder="дд.мм.гггг" class="uk-input uk-form-small" style="width:150px;cursor:pointer" ng-model="$parent.edit_item.trade_stop" ng-change="setChange()" onclick="showCalendar(this)" onchange="if(!/^\d\d\.\d\d\.\d\d\d\d$/.test(this.value)){alert('Неверный формат даты');this.value=''}">
+						</div>
+						<span class="vers_ico">
+							<span style="cursor:pointer" class="uk-icon-button" uk-icon="icon:info" onclick="showVersion('Реестр Запросов','_x0414__x0430__x0442__x0430__x002',this)" item_id="{{$parent.edit_item.id}}"></span>
+						</span>
+					</span>
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+
+	<div class="uk-margin uk-margin-remove sp-container-right">
+
+		<div>
+			<label class="uk-form-label" for="form-stacked-text">
+				Статус: <span><font color="#a44a3f">{{$parent.edit_item.status}}</font></span>
+				<span class="vers_ico">
+					<span style="cursor:pointer" class="uk-icon-button" uk-icon="icon:info" onclick="showVersion('Реестр Запросов','_x0421__x0442__x0430__x0442__x04',this)" item_id="{{$parent.edit_item.id}}"></span>
+				</span>
+			</label>
+		</div>
+
+		<div class="sp-h-padding"></div>
+
+		<div ng-if="$parent.zaks.length > 0">
+			<label class="uk-form-label" for="form-stacked-text">Заказы</label><br>
+			<span class="uk-form-controls">
+				<span ng-repeat="item in $parent.zaks">
+					<a target="_zak" href="/crm/zakaz/edit/?id={{item.id}}">
+						<span uk-icon="icon: m-add-shopping-cart;ratio:0.7" class="uk-icon"></span>
+						<span class="uk-text-middle">{{item.number}}</span>
+					</a>
+				</span>
+			</span>
+		</div>
+
+		<div class="sp-h-padding" ng-if="$parent.zaks.length > 0"></div>
+
+		<div ng-if="$parent.edit_item.rejection != ''">
+			<label class="uk-form-label" for="form-stacked-text">Причина Отказа, Проигрыша, Выигравшие условия</label><br>
+			<span class="uk-form-controls">
+				<textarea class="uk-textarea uk-form-width-large uk-form-small" rows="4" ng-change="setChange()" ng-model="$parent.edit_item.rejection"></textarea>
+				<span class="vers_ico">
+					<span style="cursor:pointer" class="uk-icon-button" uk-icon="icon:info" onclick="showVersion('Реестр Запросов','_x041f__x0440__x0438__x0447__x04',this)" item_id="{{$parent.edit_item.id}}"> </span>
+				</span>
+			</span>
+		</div>
+
+		<div class="sp-h-padding" ng-if="$parent.edit_item.rejection != ''"></div>
+
+		<div class="sp-flex-container">
+		
+			<div class="sp-flex-left">
+				<label class="uk-form-label" for="form-stacked-text">Дата запроса <font color="red">*</font></label>
+				<span class="uk-form-controls">
+					<div class="uk-inline">
+						<span style="cursor:pointer" class="uk-form-icon uk-form-icon-flip" uk-icon="icon: calendar"></span>
+						<input style="cursor: pointer" placeholder="дд.мм.гггг" class="uk-input uk-form-small sp-styles" ng-model="$parent.edit_item.dt" ng-change="setChange()" onclick="showCalendar(this)" onchange="if(!/^\d\d\.\d\d\.\d\d\d\d$/.test(this.value)){alert('Неверный формат даты');this.value=''}">
+					</div>
+					<span class="vers_ico">
+						<span style="cursor:pointer" class="uk-icon-button" uk-icon="icon:info" onclick="showVersion('Реестр Запросов','_x0414__x0430__x0442__x0430__x00',this)" item_id="{{$parent.edit_item.id}}"></span>
+					</span>
+				</span>
+			</div>
+
+			<div class="sp-flex-right">
+				<div ng-if="$parent.edit_item.dt_nazn != ''">
+					<label class="uk-form-label" for="form-stacked-text">
+						Дата назначения
+						<font color="#a44a3f">{{$parent.edit_item.dt_nazn}}</font>
+					</label>
+				</div>
+			</div>
+
+		</div>
+
+		<div class="sp-h-padding"></div>
+
+		<div class="sp-flex-container">
+		
+			<div class="sp-flex-left">
+				<label class="uk-form-label" for="form-stacked-text">
+					Требуемая дата <font color="red" ng-if="$parent.edit_item.type == 'Запрос' || $parent.edit_item.type == 'Проект' || $parent.edit_item.type == 'Тендер'">*</font>
+				</label>
+				<span class="uk-form-controls">
+					<div class="uk-inline">
+						<span class="uk-form-icon uk-form-icon-flip" uk-icon="icon: calendar"></span>
+						<input style="cursor: pointer" placeholder="дд.мм.гггг" class="uk-input uk-form-small sp-styles" ng-model="$parent.edit_item.dt_treb" ng-change="setChange()" onclick="showCalendar(this)" onchange="if(!/^\d\d\.\d\d\.\d\d\d\d$/.test(this.value)){alert('Неверный формат даты');this.value=''}">
+					</div>
+					<span class="vers_ico">
+						<span style="cursor:pointer" class="uk-icon-button" uk-icon="icon:info" onclick="showVersion('Реестр Запросов','_x0422__x0440__x0435__x0431__x04',this)" item_id="{{$parent.edit_item.id}}"></span>
+					</span>
+				</span>
+			</div>
+
+			<div class="sp-flex-right">
+				<div ng-if="$parent.edit_item.dt_fakt != ''">
+					<label class="uk-form-label" for="form-stacked-text">
+						Фактическая дата
+						<font color="#a44a3f">{{$parent.edit_item.dt_fakt}}</font>
+					</label><br>
+					<br>
+				</div>
+			</div>
+
+		</div>
+
+		<div class="sp-h-padding"></div>
+
+		<div>
+			<label class="uk-form-label" for="form-stacked-text">Планируемая дата</label><br>
+			<span class="uk-form-controls">
+				<div class="uk-inline">
+					<span class="uk-form-icon uk-form-icon-flip" uk-icon="icon: calendar"></span>
+					<input style="cursor: pointer" placeholder="дд.мм.гггг" class="uk-input uk-form-small sp-styles" ng-model="$parent.edit_item.dt_plan" ng-change="setChange()" onclick="showCalendar(this)" onchange="if(!/^\d\d\.\d\d\.\d\d\d\d$/.test(this.value)){alert('Неверный формат даты');this.value=''}">
+				</div>
+				<span class="vers_ico">
+					<span style="cursor:pointer" class="uk-icon-button" uk-icon="icon:info" onclick="showVersion('Реестр Запросов','_x041f__x043b__x0430__x043d__x04',this)" item_id="{{$parent.edit_item.id}}"></span>
+				</span>
+			</span>
+		</div>
+
+		<div class="sp-h-padding"></div>
+
+		<div>
+			<label class="uk-form-label" for="form-stacked-text">Исходящий документ (ТКП, СЧЕТ)</label>
+			<div class="sp-flex-container uk-form-controls uk-text-truncate">
+				<select class="uk-text-truncate uk-select uk-form-small sp-styles"
+					style="width:80%"
+					ng-model="$parent.edit_item.ish"
+					ng-change="setChange()"
+					ng-disabled="$parent.edit_item.id == 0">
+					<option></option>
+					<option value="{{item.id + ';#' + item.cod}}" ng-repeat="item in $parent.ish">{{item.cod}} {{item.name}}</option>
+				</select>
+				<div style="display:inline;width:30px;" ng-if="$parent.edit_item.ish != ''">
+					<a style="align-self:center" href="/crm/ish/?id={{($parent.edit_item.ish).split(';')[0]}}" uk-tooltip="Открыть Исходящее" target="ish">
+						<span uk-icon="icon: link" class="uk-margin-small-right uk-icon"></span>
+					</a>
+				</div>
+			</div>
+			<a style="cursor:pointer" ng-click="makeTKP()" input_id="ispoln" >
+				<span uk-icon="icon: m-library-add" class="uk-margin-small-right uk-icon"></span>
+				<span class="sp-add">Создать Исходящее</span>
+			</a>
+			<span class="vers_ico">
+				<span style="cursor:pointer" class="uk-icon-button" uk-icon="icon:info" onclick="showVersion('Реестр Запросов','_x0418__x0441__x0445__x043e__x04',this)" item_id="{{$parent.edit_item.id}}"></span>
+			</span>
+		</div>
+
+		<div class="sp-h-padding"></div>
+
+		<input type="hidden" id="sotrs" value="{{$parent.sotrs_st}}">
+
+		<div class="sp-flex-container">
+			<div class="sp-flex-left">
+				<label class="uk-form-label" for="form-stacked-text">Исполнители <font color="red">*</font></label>
+				<div class="uk-form-controls">
+					<div class="sp-user" ng-repeat="item in $parent.edit_item.ispoln.split(';#') track by $index">
+						<div ng-if="$odd">
+							<b>{{item}}&nbsp;&nbsp;</b>
+							<span uk-icon="icon: trash; ratio: .7" style="cursor:pointer" onclick="deleteInList(this)" input_id="ispoln" del_index="{{$index}}"></span>
+						</div>
+					</div>
+					<span class="vers_ico">
+						<span style="cursor:pointer" class="uk-icon-button" uk-icon="icon:info" onclick="showVersion('Реестр запросов','_x0418__x0441__x043f__x043e__x04',this)" item_id="{{$parent.edit_item.id}}"></span>
+					</span>
+					<a style="cursor:pointer" onclick="selectSotr(this)" input_id="ispoln">
+						<span uk-icon="icon: push" class="uk-margin-small-right uk-icon"></span>
+						<span class="sp-add">Добавить сотрудника</span>
+					</a>
+				</div>
+				<input type="text" multiple style="display:none" ng-model="$parent.edit_item.ispoln" id="ispoln" ng-change="setChange()">
+			</div>
+
+			<div class="sp-flex-right">
+				<label class="uk-form-label" for="form-stacked-text">Доступ разрешен</label>
+				<div class="uk-form-controls">
+					<div class="sp-user" ng-repeat="item in $parent.edit_item.dostup.split(';#') track by $index">
+						<div ng-if="$odd">
+							<b>{{item}}&nbsp;&nbsp;</b>
+							<span class="sp-user" uk-icon="icon: trash; ratio: .7" style="cursor:pointer" onclick="deleteInList(this)" input_id="dostup" del_index="{{$index}}"></span>
+						</div>
+					</div>
+					<span class="vers_ico">
+						<span style="cursor:pointer" class="uk-icon-button" uk-icon="icon:info" onclick="showVersion('Реестр командировок','_x0414__x043e__x0441__x0442__x04',this)" item_id="{{$parent.edit_item.id}}"></span>
+					</span>
+					<a style="cursor:pointer" onclick="selectSotr(this)" input_id="dostup">
+						<span uk-icon="icon: push" class="uk-margin-small-right uk-icon"></span>
+						<span class="uk-text-middle sp-add">Добавить сотрудника</span>
+					</a>
+				</div>
+				<input type="text" multiple style="display:none" ng-model="$parent.edit_item.dostup" id="dostup" ng-change="setChange()">
+			</div>
+
+		</div>
+
+		<div class="sp-h-padding"></div>
+
+		<div ng-if="($parent.actuators_calcs).length > 0" class="uk-margin-bottom">
+			<label class="uk-form-label" for="form-stacked-text">Расчеты</label>
+			<div ng-repeat="item in $parent.actuators_calcs">
+				<a target="act_culc" href="/crm/actuator_calc/#{{item.id}}">
+					{{item.creater}}
+					<span ng-if="item.privod.type != ''">
+						<span ng-if="item.privod.name != ''">_{{item.privod.name}}_</span>
+						<span ng-if="item.privod.name == ''">_{{item.privod.type}}_</span>
+					</span>
+					<span ng-if="item.blok.type != ''">
+						<span ng-if="item.blok.name != ''">_{{item.blok.name}}_</span>
+						<span ng-if="item.blok.name == ''">_{{item.blok.type}}_</span>
+					</span>
+					<span ng-if="item.reductor.type != ''">
+						<span ng-if="item.reductor.name != ''">_{{item.reductor.name}}_</span>
+						<span ng-if="item.reductor.name == ''">_{{item.reductor.type}}_</span>
+					</span>
+					{{item.amount}}шт._{{item.summ}}&euro;
+				</a>
+			</div>
+		</div>
+
+		<div ng-if="$parent.edit_item.id != 0">
+			<label class="uk-form-label" for="form-stacked-text">Файлы</label>
+			<span uk-icon="icon: m-attachment; ratio:.7" class="uk-margin-small-right uk-icon"></span>{{$parent.edit_item.files}}
+			<span uk-icon="icon: m-folder-open; ratio:.7" class="uk-margin-small-right uk-icon"></span>{{$parent.edit_item.folders}}
+
+			<div class="uk-text-truncate" id="files"></div>
+
+			<div id="file_upload_div" ng-style="{ 'display' :
+					(
+						$parent.current_user.full_access ||
+						($parent.edit_item.ispoln).indexOf($parent.current_user.name) > 0 ||
+						($parent.edit_item.dostup).indexOf($parent.current_user.name) > 0 ||
+						($parent.edit_item.otv).split('#')[1] == $parent.current_user.name ||
+						($parent.edit_item.otv_proj).split('#')[1] == $parent.current_user.name
+					) ? 'block' : 'none' }">
+
+				<div class="sp-flex-container">
+					<div style="visibility: hidden" uk-spinner id="file_upload_spinner"></div>
+					<a style="cursor:pointer" onclick="document.getElementById('ffuplfiles').click()">
+						<span uk-icon="icon: cloud-upload" class="uk-margin-small-right uk-icon"></span>
+						<span class="sp-add">Загрузить файлы</span>
+					</a>
+					<input type="file" multiple="multiple" name="ffuplfiles" id="ffuplfiles" onchange="uploadFiles()" style="display:none">
+				</div>
+				<div class="sp-flex-container">
+					<div uk-spinner style="visibility: hidden" id="file_upload_spinner"></div>
+					<a style="cursor:pointer" onclick="createFolder()">
+						<span uk-icon="icon: m-create-new-folder" class="uk-margin-small-right uk-icon"></span>
+						<span class="sp-add">Добавить папку</span>
+					</a>
+					<input type="file" multiple="multiple" name="ffuplfiles" id="ffuplfiles" onchange="uploadFiles()" style="display:none">
+				</div>
+			</div>
+			<input type="hidden" id="item_id" value="{{$parent.edit_item.id}}">
+			<input type="text" id="files_amount" ng-model="$parent.edit_item.files" style="display:none">
+			<input type="text" id="folder_amount" ng-model="$parent.edit_item.folders" style="display:none">
+			<input type="hidden" id="file_library" value="DocLib20">
+			<input type="hidden" id="list_name" value="Реестр Запросов">
+			<input type="hidden" id="file_path" value="">
+		</div>
+
+	</div>
+
+</div>
+
+
+<div class="created-changed" ng-if="$parent.edit_item.id != 0">
+	<span ng-if="$parent.edit_item.created != ''">Создан: {{$parent.edit_item.created}} ({{$parent.edit_item.author}})</span><br>
+	<span ng-if="$parent.edit_item.editor != ''">Изменен: {{$parent.edit_item.modified}} ({{$parent.edit_item.editor}})</span>
+</div>

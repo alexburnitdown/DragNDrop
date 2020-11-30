@@ -1,0 +1,123 @@
+﻿<div id="modal-edit-element" class="uk-width-1-1" uk-modal="bg-close:false">
+	<div class="uk-modal-dialog uk-modal-body uk-width-3-4">
+
+		<button class="uk-modal-close-outside" type="button" uk-close></button>
+<!--
+		<div class="uk-modal-header uk-margin-remove-bottom uk-padding-remove-bottom">
+
+
+			<div class="uk-align-right uk-margin-large-right" style="height:36px">&nbsp;
+				<span ng-if="$parent.edit_item.id != 0">
+
+
+				<a href="?id={{$parent.edit_item.id}}" uk-icon="icon: link"  class="uk-icon-button"
+					uk-tooltip="Cсылка на исходяший"
+				></a>
+
+				<span style="cursor:pointer" class="uk-icon-button" uk-icon="icon:info"
+					uk-tooltip="Показать версии полей"
+					onclick="showHideVersions()">
+				</span>
+
+				</span>
+
+			</div>-->
+<!--
+			<h2 class="uk-modal-title uk-margin-remove">
+				Исходящий <span ng-if="$parent.edit_item.cod != ''">{{$parent.edit_item.cod}}</span>
+			</h2>
+
+			<div style="margin-top:-15px">&nbsp;
+				<div ng-if="$parent.message_alert != ''" style="color:rgb(50, 210, 150)">
+					{{$parent.message_alert}}
+				</div>
+				<div ng-if="$parent.edit_item_change" style="color:rgb(250, 160, 90)">
+					Вы меняли данные, не забудте Сохранить
+				</div>
+				<div ng-if="$parent.message != ''" style="color:rgb(50, 210, 150)">
+					{{$parent.message}}
+				</div>
+
+			</div>
+		-->
+
+	<!--</div>-->
+
+	<!-- <label class="uk-form-label" for="form-stacked-text">Файлы</label>
+			<span uk-icon="icon: m-attachment; ratio:.7" class="uk-margin-small-right uk-icon"></span>{{$parent.edit_item.files}} -->
+
+
+
+		<div class="uk-modal-body uk-padding-small-top " uk-overflow-auto>
+
+			<div class="drop-zone">
+								<span class="drop-zone__prompt">Перетащите файлы сюда для загрузки или кликните по этому полю</span>
+
+							<input type="file" multiple class="drop-zone__input" id="ffuplfiles" style="display:none">
+							<div uk-spinner style="visibility:hidden" id="file_upload_spinner"></div>
+					</div>
+			<div class="sp-container">
+
+				<div class="uk-text-truncate" id="filesTable"></div>
+
+
+
+				<!-- <div>
+							<div uk-spinner style="visibility:hidden" id="file_upload_spinner"></div>
+
+										<a style="cursor:pointer" onclick="document.getElementById('ffuplfiles').click()">
+											<span uk-icon="icon: cloud-upload" class="uk-margin-small-right uk-icon"></span>
+											<span class="uk-text-middle">Загрузить файлы</span>
+										</a>
+										<input type="file" multiple="multiple" name="ffuplfiles" id="ffuplfiles" onchange="fileChange()" style="display:none"><br>
+
+
+							</div> -->
+
+
+							<!-- <div style=padding-bottom:10px;height:5%> -->
+			<!-- </b>ПОИСК<b>
+			<input id=sotr_search_input class="uk-input uk-form-small uk-width-1-2" onkeyup="selectSotrFilter()"> -->
+			<!-- </div> -->
+			<!-- </b>ПОИСК<b> -->
+
+			</div>
+
+
+			<input name='tags-outside' id='item_tag' class='tagify--outside' placeholder='write some tags'>
+
+			<div class="ish-created" ng-if="$parent.edit_item.id != 0">
+				<br>
+				<span ng-if="$parent.edit_item.created != ''">Создан: {{$parent.edit_item.created}} ({{$parent.edit_item.author}})</span><br>
+				<span ng-if="$parent.edit_item.editor != ''">Изменен: {{$parent.edit_item.modified}} ({{$parent.edit_item.editor}})</span>
+			</div>
+
+		</div>
+
+
+		<div class="uk-modal-footer">
+
+
+
+			<div>
+				<button class="uk-button" type="button"
+					onclick="uploadDocFiles()">
+					<span class="ti-save"></span>&nbsp;&nbsp;Сохранить
+				</button>
+
+
+				<button class="uk-button uk-button-danger uk-modal-close" type="button" ng-click="deleteEditItem()">
+					<span uk-icon="icon:trash"></span>&nbsp;&nbsp;Удалить
+				</button>
+
+				<button class="uk-button uk-modal-close" type="button">
+					<span class="ti-save"></span>&nbsp;&nbsp;Закрыть окно
+				</button>
+
+
+			</div>
+
+		</div>
+
+	</div>
+</div>

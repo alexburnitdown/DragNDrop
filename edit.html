@@ -50,7 +50,7 @@
 
 		<div class="uk-modal-body uk-padding-small-top " uk-overflow-auto>
 
-			<div class="drop-zone">
+			<div class="drop-zone" ng-if="$parent.edit_item.id == 0">
 								<span class="drop-zone__prompt">Перетащите файлы сюда для загрузки или кликните по этому полю</span>
 
 							<input type="file" multiple class="drop-zone__input" id="ffuplfiles" style="display:none">
@@ -58,7 +58,10 @@
 					</div>
 			<div class="sp-container">
 
-				<div class="uk-text-truncate" id="filesTable"></div>
+				<div ng-if="$parent.edit_item.id != 0">{{$parent.edit_item.name}}</div>
+				<!-- <div ng-if="$parent.edit_item.id != 0">{{$parent.edit_item.tag}}</div> -->
+
+				<div class="uk-text-truncate" id="files"></div>
 
 
 
@@ -106,7 +109,7 @@
 				</button>
 
 
-				<button class="uk-button uk-button-danger uk-modal-close" type="button" ng-click="deleteEditItem()">
+				<button class="uk-button uk-button-danger uk-modal-close" type="button" ng-if="$parent.edit_item.id != 0" ng-click="deleteEditItem()">
 					<span uk-icon="icon:trash"></span>&nbsp;&nbsp;Удалить
 				</button>
 

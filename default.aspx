@@ -4,8 +4,7 @@
 <!--#include virtual="/inc/top.aspx"-->
 
 <script type="text/javascript" language="JavaScript" src="/JavaScript/function.js"></script>
-<script type="text/javascript" language="JavaScript" src="jQWCloudv3.4.1.js"></script>
-<script type="text/javascript" language="JavaScript" src="index.js"></script>
+<script type="text/javascript" language="JavaScript" src="jquery.prettytag.js"></script>
 <script type="text/javascript" language="JavaScript" src="tagify.min.js"></script>
 <link rel="stylesheet" href="tagify.css" />
 

@@ -1,11 +1,12 @@
 <div class="sp-loader" ng-if="$parent.view_loader"></div>
-<div id="wordCloud" style="width:50px;height:25px;border: 1px solid red"></div>
+<div id="wordCloud"></div>
 
 <table cellpadding="1" cellspacing="1" bgcolor="#AAAAAA" class="uk-margin-top" width="100%">
 
 	<tr bgcolor="#DDDDFF">
 		<td width="5%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
 		<td>Имя</td>
+<!-- 		<td>Тип файла</td> -->
 		<td>Кем создано</td>
 		<td>Создан</td>
 		<td>кем изменено</td>
@@ -19,6 +20,7 @@
 							ng-click="editItem(item.id,$index)">
 					</td>
 					<td width="300">{{item.name}}</td>
+<!-- 					<td width="300">{{item.file_type}}</td> -->
 		            <td >{{item.author.split('#')[1]}}</td>
 		            <td >{{item.created}}</td>
 		            <td >{{item.editor.split('#')[1]}}</td>
@@ -26,7 +28,7 @@
 		            <td>
 						<span ng-repeat="itemm in item.tag">
 							<span>{{itemm.value}}</span>
-							<span ng-if="!$last">,</span>
+						</span>
 					</td>
         </tr>
 

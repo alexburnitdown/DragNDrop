@@ -182,6 +182,7 @@ foreach (SPListItem item in it_coll) {
 	st += "{";
 	st += "\"id\":"				+ item["ID"].ToString()											+ "  ,";
 	st += "\"name\":\"";		if(item["FileLeafRef"]						!= null)	st += item["FileLeafRef"].ToString();					st += "\",";
+	// st += "\"tag\":\"";			if(item["_x0422__x0435__x0433_"] 			!= null)	st += item["_x0422__x0435__x0433_"].ToString();  st += "\",";
 	st += "\"tag\":";
 	if(item["_x0422__x0435__x0433_"] != null) {
 		if(item["_x0422__x0435__x0433_"].ToString().IndexOf("[") >= 0) {

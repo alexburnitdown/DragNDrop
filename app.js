@@ -72,41 +72,9 @@ App.controller('list', function($scope,$http,$sanitize) {
 	$scope.edit_index	= 0;
 	$scope.edit_item	= {
 		 id:0
-		,sh:""
-		,dt:""
 		,name:""
-		,bill:""
-		,sklad:""
-		,org:""
-		,client:""
-		,client_kon:""
-		,supplier:""
-		,prim:""
-		,tovars:[
-			{
-				id:0,
-				name:"",
-				name_bill:"", 	// название товара по счету
-				nomen_tovars:"", 		// название товара из конструктора
-				zakups_kolvo:0,
-				kolvo:0,		// поле ручного ввода
-				price_rub:0,
-				dt:"",
-				sh:"",
-				postav:"",
-				prihod:"",
-				supplier:"",
-				client:"",
-				client_kon:"",
-				sotr:"",
-				sklad:"",
-				bill:"",
-				type:"",
-				org:""
-			}
-		]
-		,files:0
-		,folders:0
+		,tag:""
+		,file_type:""
 		,created:""
 		,modified:""
 		,author:""
@@ -124,22 +92,6 @@ App.controller('list', function($scope,$http,$sanitize) {
 
 	});
 
-		$scope.$watch("edit_item.files",function(newName, oldName){
-		if($scope.items.length > 0) {
-			//console.log("edit_item.files=" + $scope.edit_item.files);
-			$scope.items[$scope.edit_index].files = $scope.edit_item.files;
-			//console.log("$scope.edit_index=" + $scope.edit_index);
-			//console.log("$scope.items[$scope.edit_index].files=" + $scope.items[$scope.edit_index].files);
-		}
-	},true);
-
-
-	//$http.get('/total/ajax/getPlats/?rnd=' + Math.random()).then(function success(response) {
-
-	//	$scope.org = response.data;
-	//	$scope.colls[1].select_options = $scope.org;
-
-	//});
 
 
 	$http.get('/total/ajax/getUser/').then(function success(response) {
@@ -232,7 +184,7 @@ App.controller('list', function($scope,$http,$sanitize) {
 		http_get += "last_id="	+ $scope.items_last_id							+ "&";
 		http_get += "rnd="		+ Math.random()									+ "&";
 
-		console.log("https://portal.don-arsenal.ru/crm/parties/" + http_get);
+		// console.log("https://portal.don-arsenal.ru/crm/parties/" + http_get);
 
 		$http.get(http_get).then(function success(response) {
 
@@ -255,15 +207,15 @@ App.controller('list', function($scope,$http,$sanitize) {
 			$scope.view_loader = false;
 
 		});
-
+		getTags();
 	}
 
 
 
-	$scope.editItem = function (item_id,index,type) {
+	$scope.editItem = function (item_id,index) {
 
 		console.log("F:editItem");
-		console.log("type=" + type);
+		// console.log("type=" + type);
 
 		if($scope.current_user.id == 0) {
 			setTimeout(function() {
@@ -274,35 +226,36 @@ App.controller('list', function($scope,$http,$sanitize) {
 
 		console.log("item_id=" + item_id);
 
-		$scope.edit_index = index;
+		// $scope.edit_index = index;
 
 		$scope.message = "";
 		$scope.message_alert = "";
 		$scope.edit_item_change = false;
 
-		$scope.postav = [];
-		$scope.zakups = [];
-		$scope.tovars_check = [];
+		// $scope.postav = [];
+		// $scope.zakups = [];
+		// $scope.tovars_check = [];
 
 		if(item_id == 0) {
 			$scope.edit_item		=
 			{
 				id:0
-				,sh:""
+				// ,sh:""
 				,name:""
-				,postav:""
-				,dt:convertToDt(new Date())
-				,sklad:""
-				,bill:""
-				,sotr:$scope.current_user.id + ";#" + $scope.current_user.name
-				,org:"" 						//Наша
-				,client:""
-				,client_kon:""
-				,supplier:""
-				,prim:""
-				,tovars:[]
-				,files:0
-				,folders:0
+				,tag:""
+				,file_type:""
+				// ,dt:convertToDt(new Date())
+				// ,sklad:""
+				// ,bill:""
+				// ,sotr:$scope.current_user.id + ";#" + $scope.current_user.name
+				// ,org:"" 						//Наша
+				// ,client:""
+				// ,client_kon:""
+				// ,supplier:""
+				// ,prim:""
+				// ,tovars:[]
+				// ,files:0
+				// ,folders:0
 				,created:""
 				,modified:""
 				,author:""
@@ -317,39 +270,22 @@ App.controller('list', function($scope,$http,$sanitize) {
 			//console.log("edit_item=" + JSON.stringify($scope.edit_item));
 
 		} else {
-			/*
+
 			$http.get('getItem/?id=' + item_id + "&rnd=" + Math.random()).then(function success(response) {
 
-				//console.log(JSON.stringify(response.data));
+				console.log(JSON.stringify(response.data));
 
 				$scope.edit_item = response.data;
+				console.log('111', JSON.stringify(response.data));
 
-
-				console.log('https://portal.don-arsenal.ru/crm/parties/getTovars/?prihod=' + item_id + "&rnd=" + Math.random());
-				$http.get('getTovars/?prihod=' + item_id + "&rnd=" + Math.random()).then(function success(response) {
-
-					//console.log(JSON.stringify(response.data));
-
-					$scope.edit_item.tovars = response.data;
-					//$scope.checkMaxKolvo();
-					$scope.getZakups();
-					console.log("$scope.edit_item=" + JSON.stringify($scope.edit_item));
-				});
 
 
 			});
-			*/
-
-
-
-			//console.log('getComments/?id=' + item_id + "&commentlist=" + encodeURIComponent("Реестр Запросов") + "&rnd=" + Math.random());
-
 
 
 		}
 
 		UIkit.modal(document.getElementById("modal-edit-element")).show();
-		getTags();
 		$scope.edit_item_change = false;
 	}
 
@@ -357,112 +293,112 @@ App.controller('list', function($scope,$http,$sanitize) {
 
 	$scope.saveItem = function(index) {
 
-		console.log("F:saveItem");
+		// console.log("F:saveItem");
 
-		//console.log(JSON.stringify($scope.edit_item));
+		// //console.log(JSON.stringify($scope.edit_item));
 
-		//if($scope.saving) return false;
-		//$scope.saving = true;
+		// //if($scope.saving) return false;
+		// //$scope.saving = true;
 
-		$scope.edit_item_change = false;
+		// $scope.edit_item_change = false;
 
-		//console.log("$scope.zakups = " + JSON.stringify($scope.zakups));
-		console.log('$scope.edit_item.supplier',$scope.edit_item.supplier);
-		console.log('$scope.edit_item.sklad',$scope.edit_item.sklad);
+		// //console.log("$scope.zakups = " + JSON.stringify($scope.zakups));
+		// console.log('$scope.edit_item.supplier',$scope.edit_item.supplier);
+		// console.log('$scope.edit_item.sklad',$scope.edit_item.sklad);
 
-		var amount_empty = 0;
-		for(var i = 0 ; i < ($scope.edit_item.tovars).length; i ++) {
-			if(($scope.edit_item.tovars[i].kolvo) * 1 == 0) {
-				amount_empty ++;
-			}
+		// var amount_empty = 0;
+		// for(var i = 0 ; i < ($scope.edit_item.tovars).length; i ++) {
+		// 	if(($scope.edit_item.tovars[i].kolvo) * 1 == 0) {
+		// 		amount_empty ++;
+		// 	}
 
-			if(amount_empty == ($scope.edit_item.tovars).length) {
-				$scope.message = "Количество не заполнено";
-				return false;
-			}
-		}
+		// 	if(amount_empty == ($scope.edit_item.tovars).length) {
+		// 		$scope.message = "Количество не заполнено";
+		// 		return false;
+		// 	}
+		// }
 
-		console.log("($scope.edit_item.tovars).length = " + ($scope.edit_item.tovars).length);
+		// console.log("($scope.edit_item.tovars).length = " + ($scope.edit_item.tovars).length);
 
-		if($scope.edit_item.id == 0) {
-			for(j = 0 ; j < amount_empty; j ++) {
-				for(i = 0 ; i < ($scope.edit_item.tovars).length; i ++) {
-					if(($scope.edit_item.tovars[i].kolvo) * 1 == 0) {
-						$scope.edit_item.tovars.splice(i,1);
-						break;
-					}
-				}
-			}
-		}
-		for(i = 0 ; i < ($scope.edit_item.tovars).length; i ++) {
-			$scope.edit_item.tovars[i].supplier = $scope.edit_item.supplier;
-			console.log('$scope.edit_item.tovars[i].supplier',$scope.edit_item.tovars[i].supplier);
-			$scope.edit_item.tovars[i].sklad = $scope.edit_item.sklad;
-			console.log('$scope.edit_item.tovars[i].sklad',$scope.edit_item.tovars[i].sklad);
-			$scope.edit_item.tovars[i].org = $scope.edit_item.org;
-			console.log('$scope.edit_item.tovars[i].org',$scope.edit_item.tovars[i].org);
-			$scope.edit_item.tovars[i].type = 'Приход';
-		}
-
-
-
-		//console.log('111', $scope.edit_item.tovars);
-		// console.log("$scope.edit_item = " + JSON.stringify($scope.edit_item));
-
-		// return false;
-
-		// console.log("$scope.edit_item.tovars = " + JSON.stringify($scope.edit_item.tovars));
-
-		$http({
-			method: 'POST',
-			url: 'saveItem/default.aspx',
-			data: encodeURIComponent(JSON.stringify($scope.edit_item)),
-			headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-		}).then(function success(response) {
-
-				// console.log(JSON.stringify(response.data));
-
-				var edit_item_index = -1;
-
-				if($scope.edit_item.id == 0) {
-
-					$scope.item_index = 0;
-
-					$scope.items.splice(0,0,{id:response.data.id});
-
-					$scope.edit_item.id			= response.data.id;
-					$scope.edit_item.created	= response.data.created;
-					$scope.edit_item.modified	= response.data.modified;
-					$scope.edit_item.author		= response.data.author;
-					$scope.edit_item.editor		= response.data.editor;
-
-				}
-
-				try{
-				$scope.items[$scope.edit_index].sh						= $scope.edit_item.sh;
-				$scope.items[$scope.edit_index].dt						= $scope.edit_item.dt;
-				$scope.items[$scope.edit_index].supplier			    = $scope.edit_item.supplier;
-				$scope.items[$scope.edit_index].client				    = $scope.edit_item.client;
-				$scope.items[$scope.edit_index].client_kon				= $scope.edit_item.client_kon;
-				$scope.items[$scope.edit_index].sklad					= $scope.edit_item.sklad;
-				$scope.items[$scope.edit_index].org 				    = $scope.edit_item.org
-				$scope.items[$scope.edit_index].sotr					= $scope.edit_item.sotr;
-				$scope.items[$scope.edit_index].bill					= $scope.edit_item.bill;
-				//$scope.items[$scope.edit_index].dt						= $scope.edit_item.dt;
-				$scope.edit_item.nomen									= response.data.nomen;
-				} catch (err) { }
+		// if($scope.edit_item.id == 0) {
+		// 	for(j = 0 ; j < amount_empty; j ++) {
+		// 		for(i = 0 ; i < ($scope.edit_item.tovars).length; i ++) {
+		// 			if(($scope.edit_item.tovars[i].kolvo) * 1 == 0) {
+		// 				$scope.edit_item.tovars.splice(i,1);
+		// 				break;
+		// 			}
+		// 		}
+		// 	}
+		// }
+		// for(i = 0 ; i < ($scope.edit_item.tovars).length; i ++) {
+		// 	$scope.edit_item.tovars[i].supplier = $scope.edit_item.supplier;
+		// 	console.log('$scope.edit_item.tovars[i].supplier',$scope.edit_item.tovars[i].supplier);
+		// 	$scope.edit_item.tovars[i].sklad = $scope.edit_item.sklad;
+		// 	console.log('$scope.edit_item.tovars[i].sklad',$scope.edit_item.tovars[i].sklad);
+		// 	$scope.edit_item.tovars[i].org = $scope.edit_item.org;
+		// 	console.log('$scope.edit_item.tovars[i].org',$scope.edit_item.tovars[i].org);
+		// 	$scope.edit_item.tovars[i].type = 'Приход';
+		// }
 
 
-				$scope.message = "Данные успешно сохранены";
-				$scope.saving = false;
-				$scope.edit_item.tovars = response.data.tovars;
 
-			}, function (response) {
-				$scope.saving = false;
-				console.log(response);
-				$scope.message = "При сохранении данных возникла ОШИБКА";
-			}
-		);
+		// //console.log('111', $scope.edit_item.tovars);
+		// // console.log("$scope.edit_item = " + JSON.stringify($scope.edit_item));
+
+		// // return false;
+
+		// // console.log("$scope.edit_item.tovars = " + JSON.stringify($scope.edit_item.tovars));
+
+		// $http({
+		// 	method: 'POST',
+		// 	url: 'saveItem/default.aspx',
+		// 	data: encodeURIComponent(JSON.stringify($scope.edit_item)),
+		// 	headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+		// }).then(function success(response) {
+
+		// 		// console.log(JSON.stringify(response.data));
+
+		// 		var edit_item_index = -1;
+
+		// 		if($scope.edit_item.id == 0) {
+
+		// 			$scope.item_index = 0;
+
+		// 			$scope.items.splice(0,0,{id:response.data.id});
+
+		// 			$scope.edit_item.id			= response.data.id;
+		// 			$scope.edit_item.created	= response.data.created;
+		// 			$scope.edit_item.modified	= response.data.modified;
+		// 			$scope.edit_item.author		= response.data.author;
+		// 			$scope.edit_item.editor		= response.data.editor;
+
+		// 		}
+
+		// 		try{
+		// 		$scope.items[$scope.edit_index].sh						= $scope.edit_item.sh;
+		// 		$scope.items[$scope.edit_index].dt						= $scope.edit_item.dt;
+		// 		$scope.items[$scope.edit_index].supplier			    = $scope.edit_item.supplier;
+		// 		$scope.items[$scope.edit_index].client				    = $scope.edit_item.client;
+		// 		$scope.items[$scope.edit_index].client_kon				= $scope.edit_item.client_kon;
+		// 		$scope.items[$scope.edit_index].sklad					= $scope.edit_item.sklad;
+		// 		$scope.items[$scope.edit_index].org 				    = $scope.edit_item.org
+		// 		$scope.items[$scope.edit_index].sotr					= $scope.edit_item.sotr;
+		// 		$scope.items[$scope.edit_index].bill					= $scope.edit_item.bill;
+		// 		//$scope.items[$scope.edit_index].dt						= $scope.edit_item.dt;
+		// 		$scope.edit_item.nomen									= response.data.nomen;
+		// 		} catch (err) { }
+
+
+		// 		$scope.message = "Данные успешно сохранены";
+		// 		$scope.saving = false;
+		// 		$scope.edit_item.tovars = response.data.tovars;
+
+		// 	}, function (response) {
+		// 		$scope.saving = false;
+		// 		console.log(response);
+		// 		$scope.message = "При сохранении данных возникла ОШИБКА";
+		// 	}
+		// );
 
 
 
@@ -472,6 +408,8 @@ App.controller('list', function($scope,$http,$sanitize) {
 	$scope.deleteEditItem = function() {
 
 		console.log("F:deleteEditItem");
+
+		console.log("item_id=111  " + $scope.edit_item.id);
 
 		if(confirm('Подтвердите удаление')) {
 
@@ -489,10 +427,7 @@ App.controller('list', function($scope,$http,$sanitize) {
 
 			});
 		}
-
-
 	}
-
 
 
 	$scope.setChange = function() {
@@ -504,14 +439,6 @@ App.controller('list', function($scope,$http,$sanitize) {
 		$scope.edit_item_change = true;
 	}
 
-
-
-
-
-
-
-
-
 	$scope.fileChange = function() {
 
 		$scope.file_change = true;
@@ -519,57 +446,6 @@ App.controller('list', function($scope,$http,$sanitize) {
 
 })
 
-function serverUpload(form_data) {
-	$.ajax({
-			url: 'uploadFiles/default.aspx',
-			dataType: "html",
-			cache: false,
-			contentType: false,
-			processData: false,
-			data: form_data,
-			type: 'post',
-			success: function (data) {
-
-				alert('Данные успешно загружены');
-				document.getElementById("file_upload_spinner").style.visibility = "hidden";
-				//document.getElementById("file_upload_spinner" + prefixx).style.visibility = "hidden";
-				var filesTable = document.querySelector(".tableTable");
-				filesTable.parentNode.removeChild(filesTable);
-				//getFiles(prefix,'reculc');
-
-				var tagifyTag = document.querySelectorAll(".tagify__tag");
-				for(var i = 0; i < tagifyTag.length; i ++) {
-					tagifyTag[i].parentNode.removeChild(tagifyTag[i]);
-				}
-
-				for(i = 0; i < form_data.item_tag.length;i ++ ){
-					k = 0;
-					for(j = 0; j < tags_array[j]; j ++) {
-						
-						if(tags_array)[j] == form_data.item_tag[i] {
-							tags_array[i].count += 1;
-							k = 1;
-						}
-					}
-					if(k = 0) {
-						//Добавляем во все места.
-						tags_array.push();
-						tags_names.push();
-						//$.get(addTAG)({
-
-						//})
-					}
-					
-				}
-
-			},
-			error: function (jqxhr, status, errorMsg) {
-				alert('Ошибка');
-				//document.getElementById("file_upload_spinner" + prefixx).style.visibility = "hidden";
-				//console.log('uploadFiles:' +  errorMsg);
-			}
-		});
-}
 
 function fileChange() {
 	// document.getElementById("files").innerHTML = data;
@@ -578,7 +454,7 @@ function fileChange() {
 
 		file = $("#ffuplfiles").prop("files")[i];
 		console.log("имя файла = " + file.name);
-		var file_names = document.querySelector('#filesTable');
+		var file_names = document.querySelector('#files');
 		//form_data.append("file", file);
 		file_names.append(file.name);
 
@@ -590,22 +466,13 @@ function fileChange() {
 }
 
 var tags_array =[];
-//var tags_ob = {};
-
-
-
+var tagify;
 
 function getTags() {
 	$.ajax({
 		url: "getTags",
 		dataType: "JSON",
-		//type: "POST",
-		//data:{
-		//		'name':name
-		//	},
 		cache: false,
-		//contentType: false,
-		//processData: false,
 		success: function (data) {
 			tags_array = data;
 			var tag_names = [];
@@ -615,8 +482,11 @@ function getTags() {
 
 			}
 			console.log('tag_names', tag_names);
-			tagify(tag_names);
+			createCloud(tag_names);
+			coloredTags();
+			showTags(tag_names);
 			dragDrop();
+
 
 		},
 		error: function (jqxhr, status, errorMsg) {
@@ -627,11 +497,63 @@ function getTags() {
 	});
 }
 
-function tagify(tags) {
+function createCloud(tags) {
 	console.log('tags', tags);
-	var input = document.querySelector('input[name=tags-outside]')
+	if (tags.length) {
+		var cloud = document.querySelector('#wordCloud');
+
+		    	var list = document.createElement('ul');
+	  			list.className = 'cloud-tags';
+
+		  		for (var i = 0 ; i < tags.length; i++) {
+		  			var newListItem = document.createElement('li');
+		  			newListItem.className = 'cloud_li';
+		  			newListItem.innerHTML = '<a href="#" class="cloud_a">' + tags[i] + '</a>';
+		  			list.appendChild(newListItem);;
+		  		};
+		  		cloud.appendChild(list);
+	  }
+
+}
+
+// function coloredTags() {
+// 	var totalTags = document.querySelectorAll(".cloud_li");
+// 	var mct = document.querySelectorAll(".cloud_a");
+// 	/*Array of Colors */
+// 	var tagColor = ["#ff0084", "#ff66ff","#43cea2","#D38312","#73C8A9","#9D50BB",
+// 	"#780206","#FF4E50","#ADD100",
+// 	"#0F2027","#00c6ff", "#81D8D0", "#5CB3FF", "#95B9C7", "#C11B17", "#3B9C9C" , "#FF7F50", "#FFD801", "#79BAEC", "#F660AB", "#3D3C3A", "#3EA055"];
+// 	}
+
+function coloredTags(){
+	var cloudList = document.querySelector(".cloud-tags");
+	var listItems = cloudList.getElementsByTagName('a');
+
+	/*Array of Colors */
+	var tagColor = ["#ff0084", "#ff66ff","#43cea2","#D38312","#73C8A9","#9D50BB",
+	"#780206","#FF4E50","#ADD100",
+	"#0F2027","#00c6ff", "#81D8D0", "#5CB3FF", "#95B9C7", "#C11B17", "#3B9C9C" , "#FF7F50", "#FFD801", "#79BAEC", "#F660AB", "#3D3C3A", "#3EA055"];
+
+    var tagCounter = 0; var color = 0; //assign colors to tags with loop, unlimited number of tags can be added
+    do {
+         if(color > 21) {color = 0;} //Start again array index if it reaches at last
+
+         if (listItems[tagCounter]) {
+	         listItems[tagCounter].style.backgroundColor = tagColor[color];
+	     }
+
+     tagCounter++;
+     color++;
+    } while( tagCounter <= listItems.length - 1)
+
+}
+
+
+function showTags(tags) {
+	console.log('tags', tags);
+	var input = document.querySelector('input[name=tags-outside]');
 	// init Tagify script on the above inputs
-	var tagify = new Tagify(input, {
+	tagify = new Tagify(input, {
 	  // whitelist: ["foo", "bar", "baz"],
 	  whitelist: tags,
 	  dropdown: {
@@ -639,13 +561,9 @@ function tagify(tags) {
 	    enabled : 0 // always opens dropdown when input gets focus
 	  }
 	})
+
 }
 
-function handleFiles(files) {
-  filesArr = [...files];
-  console.log('files', filesArr);
-  // files.forEach(uploadFile);
-}
 
 var files_array = [];
 
@@ -654,7 +572,6 @@ function dragDrop() {
 	console.log('dragDrop');
 	var dropZoneInput = document.querySelector(".drop-zone__input");
 	var dropZone = document.querySelector(".drop-zone");
-	// var dropZone = dropZoneInput.closest(".drop-zone");
 
 	dropZone.addEventListener("click", (e) => {
 	    dropZoneInput.click();
@@ -664,22 +581,15 @@ function dragDrop() {
 	dropZoneInput.addEventListener("change", (e) => {
 
 	    if (dropZoneInput.files.length) {
-	      // updateThumbnail(dropZone, dropZoneInput.files[0]);
-	      var ffiles = dropZoneInput.files;
-	     //  var dt = e.dataTransfer;
-	  	  // var files = dt.files;
+	      	var ffiles = dropZoneInput.files;
 
-	  	  // files = [...files];
+	    	var file_names = document.querySelector('#files');
 
+	    	var newTable = document.createElement('table');
+  			newTable.className = 'tableTable';
 
-
-	    var file_names = document.querySelector('#filesTable');
-
-	    var newTable = document.createElement('table');
-  		newTable.className = 'tableTable';
-
-  		var newRow = document.createElement('tr');
-  		newRow.className = 'table_row';
+  			var newRow = document.createElement('tr');
+  			newRow.className = 'table_row';
 
 	  		for (var i = 0 ; i < ffiles.length; i++) {
 	  			var newCell = document.createElement('td');
@@ -689,8 +599,6 @@ function dragDrop() {
 	  			newTable.appendChild(newRow);
 	  		};
 	  		file_names.appendChild(newTable);
-	      // file_names.append(ffile.name);
-	      // console.log('ffile', ffile.name);
 	    }
 	});
 
@@ -715,29 +623,11 @@ function dragDrop() {
 	    var dt = e.dataTransfer;
 		files_array = dt.files;
 		files = dt.files;
-		//for(var i = 0; i < files_array.length; i ++) {
-			
-		//	console.log(i);
-			//form_data.append("file", files[i]);
-		//}
 
-		
-		  console.log(files_array.length);
-		  //$("#ffuplfiles").prop("files") = files;
-  		//files = [...files];
-  		// console.log("fff222", files);
-  		// console.log("fff111", dropZoneInput.files.length);
 
-  		// handleFiles(files);
+		console.log(files_array.length);
 
-  		// console.log("fff333", files);
-  		// console.log("fff333", files.length);
-  		// if (files.length != 0) {
-	   //    dropZoneInput.files === files;
-	   //    // updateThumbnail(dropZone, e.dataTransfer.files[0]);
-	   //  }
-	   //  console.log("fff111", dropZoneInput.files);
-  		var file_names = document.querySelector('#filesTable');
+  		var file_names = document.querySelector('#files');
   		var newTable = document.createElement('table');
   		newTable.className = 'tableTable';
   		var newRow = document.createElement('tr');
@@ -748,58 +638,36 @@ function dragDrop() {
   			newCell.innerHTML = '<span class=uk-text-truncate>' + files[i].name + '</span>';
   			newRow.appendChild(newCell);
   			newTable.appendChild(newRow);
-  	// 		st1 += "<tr>";
-  	// 		st1 += "<td width=80% class=uk-text-truncate>" + files[i].name + "</a></td>";
-  	// 		st1 += "<td style=width:20px><span style=\"width:20px\" onclick=\"renameFile(this)\" class=\"uk-margin-left uk-icon-button\" uk-icon=\"icon: pencil; ratio: 0.7\"></span></td>";
-			// st1 += "<td style=width:20px><span onclick=\"deleteFile(this)\" class=\"uk-icon-button\" uk-icon=\"icon: trash; ratio: 0.7\"></span></td>";
-  	// 		st1 += "</tr>";
   		};
-  		// files.foreach(function(file) {
-  		// 	file_names.append(file.name);
-  		// });
- 		// initializeProgress(files.length);
-  		// files.forEach(uploadFile);
-  		file_names.appendChild(newTable);
 
-		//form_data.append("file", file);
-		// var ffile = dt.files[0];
+  		file_names.appendChild(newTable);
 
 	    dropZone.classList.remove("drop-zone--over");
 	});
 
 }
 
-	//var form_data = new FormData();
 
 	function uploadDocFiles() {
 		console.log("F:uploadImage");
 		// console.log("F:uploadImage111", files);
 
-		var tags = document.getElementById("item_tag");
-		if(!tags.value) {
+		var tags = document.querySelectorAll(".tagify__tag-text");
+		var tags_arr = [];
+		for(i = 0; i < tags.length; i ++) {
+			var lowerCase = tags[i].innerHTML.toLowerCase();
+			tags_arr.push(lowerCase);
+		}
+
+		if(!tags_arr) {
 			alert('no tags');
 			return false;
 		}
-		
-
-		//var prefixx = "";
-		//if(!prefix) prefix = "";
-		//if(prefix != "") prefixx= "_" + prefix;
-
-		//console.log("File_amount=" + $("#ffuplfiles").prop("files").length);
 
 		var form_data = new FormData();
 
-		form_data.append("item_tag", tags.value);
+		form_data.append("item_tag", tags_arr);
 
-		//form_data.append("item_id",		document.getElementById("item_id" + prefixx).value);
-
-		// form_data.append("file_library",document.getElementById("file_library" + prefixx).value);
-		// form_data.append("file_path",	document.getElementById("file_path" + prefixx).value);
-
-		//console.log(JSON.stringify(form_data));
-		// var dropZoneInput = document.querySelector(".drop-zone__input");
-		 //console.log("fff444", dropZoneInput.files.length);
 		for(var i = 0; i < $("#ffuplfiles").prop("files").length; i ++) {
 
 			file = $("#ffuplfiles").prop("files")[i];
@@ -807,22 +675,12 @@ function dragDrop() {
 				alert("в имени файла \"" + file.name + "\" не должно всстречаться сочетание \"..\" (две точки). Измените имя файла.");
 				return false;
 			}
-			//if(tags.value) {
-				form_data.append("file", file);
-			//	serverUpload(form_data);
-			//} else {
-			//	document.getElementById("file_upload_spinner").style.visibility = "hidden";
 
-			//	alert('no tags');
-
-
-			//}
-
-
+			form_data.append("file", file);
 		}
 
 
-		console.log("tt=" + files_array.length);
+		// console.log("tt=" + files_array.length);
 
 		for(i = 0; i < files_array.length; i ++){
 
@@ -833,17 +691,123 @@ function dragDrop() {
 			}
 
 			form_data.append("file", files_array[i]);
-
 		}
 
-		serverUpload(form_data);
+		serverUpload(form_data, tags_arr);
 
 		document.getElementById("file_upload_spinner").style.visibility = "visible";
 
-
-
-
 	}
 
+function serverUpload(form_data, tags) {
+	console.log("tags111", tags[0]);
+	var tag_names = [];
+	$.ajax({
+		url: "getTags",
+		dataType: "JSON",
+		cache: false,
+		success: function (data) {
 
+			for (var i = 0; i < data.length; i++) {
+				var tag_values = Object.values(data[i]);
+				tag_names.push(tag_values[1]);
+
+			}
+			console.log('tag_names111', tag_names);
+
+
+
+			$.ajax({
+			url: 'uploadFiles/default.aspx',
+			dataType: "html",
+			cache: false,
+			contentType: false,
+			processData: false,
+			data: form_data,
+			type: 'post',
+			success: function (data) {
+				// console.log("data", data);
+
+
+				console.log("tags", tags.length);
+				// for (var i = 0; i < tags.length; i++) {
+				// 	var tag_values = Object.values(tags[i]);
+				// 	cur_tags.push(tag_values[1]);
+				// }
+
+				var uniq_tags = [];
+
+				// console.log("cur_tags", cur_tags);
+				console.log('tag_names222', tag_names.length);
+				for(i = 0; i < tags.length; i ++ ){
+					var k = 0;
+					// console.log('tag_names222', tag_names);
+					for(j = 0; j < tag_names.length; j ++) {
+
+
+						if ((tag_names)[j] === tags[i]) {
+							console.log('такой уже есть');
+							// tag_names[j].count += 1;
+							k = 1;
+						}
+					}
+					if (k == 0) {
+						//Добавляем во все места.
+
+						console.log('такого нет, добавляю');
+							tag_names.push(tags[i]);
+							console.log('tag_names', tag_names);
+							// showTags(tag_names);
+							// createCloud(tag_names);
+							uniq_tags.push(tags[i]);
+							var form_data2 = new FormData();
+							form_data2.append("new_tag", uniq_tags);
+
+							console.log('uniq_tags', uniq_tags);
+							$.ajax({
+								url: 'saveTags/default.aspx',
+								dataType: "html",
+								cache: false,
+								contentType: false,
+								processData: false,
+								data: form_data2,
+								type: 'post'
+							})
+
+					}
+
+				}
+				alert('Данные успешно загружены');
+				document.getElementById("file_upload_spinner").style.visibility = "hidden";
+				var filesTable = document.querySelector(".tableTable");
+				filesTable.parentNode.removeChild(filesTable);
+
+				var tagifyTag = document.querySelectorAll(".tagify__tag");
+				for(var i = 0; i < tagifyTag.length; i ++) {
+					tagifyTag[i].parentNode.removeChild(tagifyTag[i]);
+				}
+
+
+			},
+			error: function (jqxhr, status, errorMsg) {
+				alert('Ошибка');
+				//document.getElementById("file_upload_spinner" + prefixx).style.visibility = "hidden";
+				//console.log('uploadFiles:' +  errorMsg);
+			}
+		});
+
+
+
+
+
+		},
+		error: function (jqxhr, status, errorMsg) {
+
+			document.getElementById("file_upload_spinner").style.visibility = "hidden";
+			//console.log('uploadFiles:' +  errorMsg);
+		}
+	});
+
+
+}
 
